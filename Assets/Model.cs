@@ -5,6 +5,43 @@ using UnityEngine;
 public class Model : MonoBehaviour
 {
 	public Vector2Int Size = Vector2Int.one;
+	private Renderer ModelRenderer;
+	private Color modelColor;
+
+	void Awake()
+	{
+		// Getting modelRenderer
+		ModelRenderer = GetComponentsInChildren<Renderer>()[0];
+
+		if (ModelRenderer != null)
+		{
+			modelColor = ModelRenderer.material.color;
+		}
+	}
+	public void SetTransparent(bool available)
+	{
+		if (available)
+		{
+			ModelRenderer.material.color = Color.green;
+		}
+		else
+		{
+			ModelRenderer.material.color = Color.red;
+		}
+	}
+
+	public void SetNormal()
+	{
+		if (modelColor != null)
+		{
+			ModelRenderer.material.color = modelColor;
+		}
+		else
+		{
+			ModelRenderer.material.color = Color.white;
+		}
+
+	}
 
 	// Function that draws Gizmos grid for each model
 	public void OnDrawGizmosSelected()

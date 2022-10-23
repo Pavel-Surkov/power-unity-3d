@@ -23,7 +23,7 @@ public class ModelsGrid : MonoBehaviour
 	{
 		if (grabbedModel != null)
 		{
-			Destroy(grabbedModel);
+			Destroy(grabbedModel.gameObject);
 		}
 
 		grabbedModel = Instantiate(modelPrefab);
@@ -47,24 +47,50 @@ public class ModelsGrid : MonoBehaviour
 				// Checking if user can place the grabbedModel by mouse position
 				bool isPlacingAvailable = true;
 
-				if (x < 0 || x > GridSize.x - grabbedModel.Size.x)
-				{
-					isPlacingAvailable = false;
-				}
+				if (x < 0 || x > GridSize.x - grabbedModel.Size.x) isPlacingAvailable = false;
 
-				if (y < 0 || y > GridSize.y - grabbedModel.Size.y)
-				{
-					isPlacingAvailable = false;
-				}
+				if (y < 0 || y > GridSize.y - grabbedModel.Size.y) isPlacingAvailable = false;
 
-				// Placing model
+				if (isPlacingAvailable && IsPlaceTaken(x, y)) isPlacingAvailable = false;
+
+
 				grabbedModel.transform.position = new Vector3(x, 0, y);
+				grabbedModel.SetTransparent(isPlacingAvailable);
 
 				if (isPlacingAvailable && Input.GetMouseButtonDown(0))
 				{
-					grabbedModel = null;
+					PlaceGrabbedModel(x, y);
 				}
 			}
 		}
+	}
+
+	// Function checking if place is taken by other model
+	private bool IsPlaceTaken(int placeX, int placeY)
+	{
+		for (int x = 0; x < grabbedModel.Size.x; x++)
+		{
+			for (int y = 0; y < grabbedModel.Size.y; y++)
+			{
+				if (grid[placeX + x, placeY + y] != null) return true;
+			}
+		}
+
+		return false;
+	}
+
+	// Function for placing GrabbedModel;
+	private void PlaceGrabbedModel(int placeX, int placeY)
+	{
+		for (int x = 0; x < grabbedModel.Size.x; x++)
+		{
+			for (int y = 0; y < grabbedModel.Size.y; y++)
+			{
+				grid[placeX + x, placeY + y] = grabbedModel;
+			}
+		}
+
+		grabbedModel.SetNormal();
+		grabbedModel = null;
 	}
 }

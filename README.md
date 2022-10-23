@@ -1,1 +1,3 @@
-Power project NSTU
+# Power project NSTU
+
+## An application that helps users to know about electrical devices
