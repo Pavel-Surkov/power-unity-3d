@@ -8,6 +8,7 @@ public class ModelsGrid : MonoBehaviour
 	private Model[,] grid;
 	private Model grabbedModel;
 	private Camera currentCamera;
+	private bool isPointerOnPanel = false;
 
 	private void Awake()
 	{
@@ -27,6 +28,18 @@ public class ModelsGrid : MonoBehaviour
 		}
 
 		grabbedModel = Instantiate(modelPrefab);
+	}
+
+	public void SetPointerOnPanel()
+	{
+		isPointerOnPanel = true;
+		Debug.Log(isPointerOnPanel);
+	}
+
+	public void RemovePointerOnPanel()
+	{
+		isPointerOnPanel = false;
+		Debug.Log(isPointerOnPanel);
 	}
 
 	private void Update()
@@ -57,7 +70,7 @@ public class ModelsGrid : MonoBehaviour
 				grabbedModel.transform.position = new Vector3(x, 0, y);
 				grabbedModel.SetTransparent(isPlacingAvailable);
 
-				if (isPlacingAvailable && Input.GetMouseButtonDown(0))
+				if (isPlacingAvailable && !isPointerOnPanel && Input.GetMouseButtonDown(0))
 				{
 					PlaceGrabbedModel(x, y);
 				}
