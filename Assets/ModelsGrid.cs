@@ -7,8 +7,10 @@ public class ModelsGrid : MonoBehaviour
 	public Vector2Int GridSize = new Vector2Int(10, 10);
 	private Model[,] grid;
 	private Model grabbedModel;
+	// private Model hoveredModel;
 	private Camera currentCamera;
 	private bool isPointerOnPanel = false;
+	private bool deleteMode = false;
 
 	private void Awake()
 	{
@@ -19,9 +21,11 @@ public class ModelsGrid : MonoBehaviour
 		currentCamera = Camera.main;
 	}
 
-	// Functions for spawning a model
+	// Function for spawning a model
 	public void StartPlacingBuilding(Model modelPrefab)
 	{
+		deleteMode = false;
+
 		if (grabbedModel != null)
 		{
 			Destroy(grabbedModel.gameObject);
@@ -30,16 +34,27 @@ public class ModelsGrid : MonoBehaviour
 		grabbedModel = Instantiate(modelPrefab);
 	}
 
+	// Function for delete button
+	public void ToggleDeleteMode()
+	{
+		deleteMode = !deleteMode;
+
+		if (grabbedModel != null)
+		{
+			Destroy(grabbedModel.gameObject);
+		}
+
+		Debug.Log(deleteMode ? "You can now delete models" : "You can't delete models now");
+	}
+
 	public void SetPointerOnPanel()
 	{
 		isPointerOnPanel = true;
-		Debug.Log(isPointerOnPanel);
 	}
 
 	public void RemovePointerOnPanel()
 	{
 		isPointerOnPanel = false;
-		Debug.Log(isPointerOnPanel);
 	}
 
 	private void Update()
@@ -76,6 +91,21 @@ public class ModelsGrid : MonoBehaviour
 				}
 			}
 		}
+
+		if (grabbedModel != null && deleteMode == true)
+		{
+			var groundPlane = new Plane(Vector3.up, Vector3.zero);
+			var ray = currentCamera.ScreenPointToRay(Input.mousePosition);
+
+			if (groundPlane.Raycast(ray, out float position))
+			{
+				Vector3 worldPosition = ray.GetPoint(position);
+
+				int x = Mathf.RoundToInt(worldPosition.x);
+				int y = Mathf.RoundToInt(worldPosition.z);
+				// RemoveGrabbedModel(, );
+			}
+		}
 	}
 
 	// Function checking if place is taken by other model
@@ -106,4 +136,17 @@ public class ModelsGrid : MonoBehaviour
 		grabbedModel.SetNormal();
 		grabbedModel = null;
 	}
+
+	// private void RemoveModel(int placeX, int placeY)
+	// {
+	// 	for (int x = 0; x < hoveredModel.Size.x; x++)
+	// 	{
+	// 		for (int y = 0; y < hoveredModel.Size.y; y++)
+	// 		{
+	// 			grid[placeX + x, placeY + y] = null;
+	// 		}
+	// 	}
+
+	// 	grabbedModel = null;
+	// }
 }
