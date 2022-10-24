@@ -59,6 +59,15 @@ public class ModelsGrid : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown("r"))
+		{
+			Debug.Log("Rotation");
+			if (grabbedModel != null)
+			{
+				grabbedModel.gameObject.transform.Rotate(0, 90, 0);
+				// TODO: Change X, Z coordinates (x, y)
+			}
+		}
 		// Sets position of grabbedModel equal to cursor's position on plane
 		if (grabbedModel != null)
 		{
@@ -80,7 +89,6 @@ public class ModelsGrid : MonoBehaviour
 				if (y < 0 || y > GridSize.y - grabbedModel.Size.y) isPlacingAvailable = false;
 
 				if (isPlacingAvailable && IsPlaceTaken(x, y)) isPlacingAvailable = false;
-
 
 				grabbedModel.transform.position = new Vector3(x, 0, y);
 				grabbedModel.SetTransparent(isPlacingAvailable);
