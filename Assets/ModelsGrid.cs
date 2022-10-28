@@ -7,10 +7,8 @@ public class ModelsGrid : MonoBehaviour
 	public Vector2Int GridSize = new Vector2Int(10, 10);
 	private Model[,] grid;
 	private Model grabbedModel;
-	// private Model hoveredModel;
 	private Camera currentCamera;
 	private bool isPointerOnPanel = false;
-	private bool deleteMode = false;
 
 	private void Awake()
 	{
@@ -24,27 +22,12 @@ public class ModelsGrid : MonoBehaviour
 	// Function for spawning a model
 	public void StartPlacingBuilding(Model modelPrefab)
 	{
-		deleteMode = false;
-
 		if (grabbedModel != null)
 		{
 			Destroy(grabbedModel.gameObject);
 		}
 
 		grabbedModel = Instantiate(modelPrefab);
-	}
-
-	// Function for delete button
-	public void ToggleDeleteMode()
-	{
-		deleteMode = !deleteMode;
-
-		if (grabbedModel != null)
-		{
-			Destroy(grabbedModel.gameObject);
-		}
-
-		Debug.Log(deleteMode ? "You can now delete models" : "You can't delete models now");
 	}
 
 	public void SetPointerOnPanel()
@@ -59,6 +42,15 @@ public class ModelsGrid : MonoBehaviour
 
 	private void Update()
 	{
+		// Destroy model when right mouse button is clicked
+		if (Input.GetMouseButtonDown(1))
+		{
+			if (grabbedModel != null)
+			{
+				Destroy(grabbedModel.gameObject);
+				grabbedModel = null;
+			}
+		}
 		// Sets position of grabbedModel equal to cursor's position on plane
 		if (grabbedModel != null)
 		{
@@ -81,7 +73,6 @@ public class ModelsGrid : MonoBehaviour
 
 				if (isPlacingAvailable && IsPlaceTaken(x, y)) isPlacingAvailable = false;
 
-
 				grabbedModel.transform.position = new Vector3(x, 0, y);
 				grabbedModel.SetTransparent(isPlacingAvailable);
 
@@ -92,7 +83,7 @@ public class ModelsGrid : MonoBehaviour
 			}
 		}
 
-		if (grabbedModel != null && deleteMode == true)
+		if (grabbedModel != null)
 		{
 			var groundPlane = new Plane(Vector3.up, Vector3.zero);
 			var ray = currentCamera.ScreenPointToRay(Input.mousePosition);
