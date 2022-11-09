@@ -7,6 +7,7 @@ public class Model : MonoBehaviour
 	public Vector2Int Size = Vector2Int.one;
 	private Renderer ModelRenderer;
 	private Color modelColor;
+	private float objectHeight;
 
 	void Awake()
 	{
@@ -17,6 +18,17 @@ public class Model : MonoBehaviour
 		{
 			modelColor = ModelRenderer.material.color;
 		}
+
+		// Correctly calculates position of the model to put it on the plane
+		// !DON'T use SCALE on the child of visuals element (must be (1, 1, 1))
+		Transform childTransform = this.gameObject.transform.GetChild(0).GetChild(0);
+		GameObject childGameObject = childTransform.gameObject;
+
+		float childColliderHeight = childGameObject.GetComponent<Collider>().bounds.size.y;
+
+		Debug.Log(childColliderHeight);
+
+		childTransform.position += Vector3.up * (childColliderHeight / 2);
 	}
 	public void SetTransparent(bool available)
 	{
