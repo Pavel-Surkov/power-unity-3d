@@ -249,7 +249,7 @@ MonoBehaviour:
         m_MethodName: StartPlacingBuilding
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -1455093325724943542, guid: 56bd7630739a746c0b02cc57f291ebf9, type: 3}
+          m_ObjectArgument: {fileID: 7214017619088659874, guid: f7e4c9441180d44efa357fbb57df9501, type: 3}
           m_ObjectArgumentAssemblyTypeName: Model, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -486,7 +486,7 @@ MonoBehaviour:
         m_MethodName: StartPlacingBuilding
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: -7566004979278960347, guid: 36f46a1fa24a4422794273073b42864e, type: 3}
+          m_ObjectArgument: {fileID: 3178931324252592798, guid: cf6b645574886408f806bc19dfe2a0df, type: 3}
           m_ObjectArgumentAssemblyTypeName: Model, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -691,7 +691,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 646722806}
   m_Direction: 3
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9933987
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
