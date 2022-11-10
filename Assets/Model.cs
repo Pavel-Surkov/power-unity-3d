@@ -7,6 +7,7 @@ public class Model : MonoBehaviour
 	public Vector2Int Size = Vector2Int.one;
 	private Renderer ModelRenderer;
 	private Color modelColor;
+	private Material[] modelMaterials;
 	private float objectHeight;
 
 	void Awake()
@@ -17,6 +18,7 @@ public class Model : MonoBehaviour
 		if (ModelRenderer != null)
 		{
 			modelColor = ModelRenderer.material.color;
+			modelMaterials = ModelRenderer.materials;
 		}
 
 		// Correctly calculates position of the model to put it on the plane
@@ -34,11 +36,11 @@ public class Model : MonoBehaviour
 	{
 		if (available)
 		{
-			ModelRenderer.material.color = Color.green;
+			ChangeMaterialsColor(Color.green);
 		}
 		else
 		{
-			ModelRenderer.material.color = Color.red;
+			ChangeMaterialsColor(Color.red);
 		}
 	}
 
@@ -46,11 +48,11 @@ public class Model : MonoBehaviour
 	{
 		if (modelColor != null)
 		{
-			ModelRenderer.material.color = modelColor;
+			ChangeMaterialsColor(modelColor);
 		}
 		else
 		{
-			ModelRenderer.material.color = Color.white;
+			ChangeMaterialsColor(Color.white);
 		}
 
 	}
@@ -73,6 +75,14 @@ public class Model : MonoBehaviour
 
 				Gizmos.DrawCube(transform.position + new Vector3(x, 0, y), new Vector3(1f, .1f, 1f));
 			}
+		}
+	}
+
+	public void ChangeMaterialsColor(Color color)
+	{
+		foreach (Material material in modelMaterials)
+		{
+			material.color = color;
 		}
 	}
 }
