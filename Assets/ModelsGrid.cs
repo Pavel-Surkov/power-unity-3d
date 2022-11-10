@@ -7,10 +7,8 @@ public class ModelsGrid : MonoBehaviour
 	public Vector2Int GridSize = new Vector2Int(10, 10);
 	private Model[,] grid;
 	private Model grabbedModel;
-	// private Model hoveredModel;
 	private Camera currentCamera;
 	private bool isPointerOnPanel = false;
-	private bool deleteMode = false;
 
 	private void Awake()
 	{
@@ -24,27 +22,12 @@ public class ModelsGrid : MonoBehaviour
 	// Function for spawning a model
 	public void StartPlacingBuilding(Model modelPrefab)
 	{
-		deleteMode = false;
-
 		if (grabbedModel != null)
 		{
 			Destroy(grabbedModel.gameObject);
 		}
 
 		grabbedModel = Instantiate(modelPrefab);
-	}
-
-	// Function for delete button
-	public void ToggleDeleteMode()
-	{
-		deleteMode = !deleteMode;
-
-		if (grabbedModel != null)
-		{
-			Destroy(grabbedModel.gameObject);
-		}
-
-		Debug.Log(deleteMode ? "You can now delete models" : "You can't delete models now");
 	}
 
 	public void SetPointerOnPanel()
@@ -59,13 +42,13 @@ public class ModelsGrid : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetKeyDown("r"))
+		// Destroy model when right mouse button is clicked
+		if (Input.GetMouseButtonDown(1))
 		{
-			Debug.Log("Rotation");
 			if (grabbedModel != null)
 			{
-				grabbedModel.gameObject.transform.Rotate(0, 90, 0);
-				// TODO: Change X, Z coordinates (x, y)
+				Destroy(grabbedModel.gameObject);
+				grabbedModel = null;
 			}
 		}
 		// Sets position of grabbedModel equal to cursor's position on plane
@@ -96,13 +79,13 @@ public class ModelsGrid : MonoBehaviour
 				if (isPlacingAvailable && !isPointerOnPanel && Input.GetMouseButtonDown(0))
 				{
 					PlaceGrabbedModel(x, y);
-					
+
 				}
-				
+
 			}
 		}
 
-		if (grabbedModel != null && deleteMode == true)
+		if (grabbedModel != null)
 		{
 			var groundPlane = new Plane(Vector3.up, Vector3.zero);
 			var ray = currentCamera.ScreenPointToRay(Input.mousePosition);
@@ -142,13 +125,13 @@ public class ModelsGrid : MonoBehaviour
 			{
 				grid[placeX + x, placeY + y] = grabbedModel;
 			}
-			
+
 		}
 
 		grabbedModel.SetNormal();
 		grabbedModel = null;
 	}
-	
+
 
 	// private void RemoveModel(int placeX, int placeY)
 	// {
