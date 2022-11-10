@@ -88,7 +88,9 @@ public class ModelsGrid : MonoBehaviour
 				if (isPlacingAvailable && !isPointerOnPanel && Input.GetMouseButtonDown(0))
 				{
 					PlaceGrabbedModel(x, y);
+					
 				}
+				
 			}
 		}
 
@@ -116,6 +118,7 @@ public class ModelsGrid : MonoBehaviour
 			for (int y = 0; y < grabbedModel.Size.y; y++)
 			{
 				if (grid[placeX + x, placeY + y] != null) return true;
+				Debug.Log(grid);
 			}
 		}
 
@@ -131,11 +134,13 @@ public class ModelsGrid : MonoBehaviour
 			{
 				grid[placeX + x, placeY + y] = grabbedModel;
 			}
+			
 		}
 
 		grabbedModel.SetNormal();
 		grabbedModel = null;
 	}
+	
 
 	// private void RemoveModel(int placeX, int placeY)
 	// {
