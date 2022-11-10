@@ -21,7 +21,7 @@ public class Model : MonoBehaviour
 			modelMaterials = ModelRenderer.materials;
 		}
 
-		// Correctly calculates position of the model to put it on the plane
+		// Correctly calculates position Y of the model to put it on the plane
 		// !DON'T use SCALE on the child of visuals element (must be (1, 1, 1))
 		Transform childTransform = this.gameObject.transform.GetChild(0).GetChild(0);
 		GameObject childGameObject = childTransform.gameObject;
